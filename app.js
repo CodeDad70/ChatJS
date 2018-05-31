@@ -31,6 +31,7 @@ io.on("connection", function (socket) {
   });
 });
 
+
 function getCurrentDate() {
   var currentDate = new Date();
   var day = (currentDate.getDate() < 10 ? '0' : '') + currentDate.getDate();
