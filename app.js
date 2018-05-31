@@ -13,7 +13,7 @@ function response(req, res) {
     file = __dirname + req.url;
   }
 
-  fs.readFile(file, function (err, data){
+  fs.readFile(file, function (err, data) {
     if (err) {
       res.writeHead(404);
       return res.end('Page or file note found');
@@ -21,5 +21,24 @@ function response(req, res) {
     res.writeHead(200);
     res.end(data);
   })
+}
+
+io.on("connection", function (socket) {
+  socket.on("send mesage", function (send_msg, callback) {
+    sent_msg = "[" + getCurrentDate() + "]:" + send_msg;
+    io.sockets.emit("update messages", sent_msg);
+    callback();
+  });
+});
+
+function getCurrentDate() {
+  var currentDate = new Date();
+  var day = (currentDate.getDate() < 10 ? '0' : '') + currentDate.getDate();
+  var month = ((currentDate.getMonth() + 1) < 10 ? '0' : '') + (currentDate.getMonth() + 1);
+  var year = currentDate.getFullYear();
+  var hour = (currentDate.getHours() < 10 ? '0' : '') + currentDate.getHours();
+  var minute = (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes();
+  var second = (currentDate.getSeconds() < 10 ? '0' : '') + currentDate.getSeconds();
+  return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 }
 
